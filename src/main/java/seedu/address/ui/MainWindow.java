@@ -32,6 +32,7 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private EventPanel eventPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -66,6 +67,7 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
+        eventPanel = new EventPanel();
     }
 
     public Stage getPrimaryStage() {
@@ -147,6 +149,24 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Shows the events page within the main window.
+     */
+    @FXML
+    public void handleEvents() {
+        personListPanelPlaceholder.getChildren().clear();
+        personListPanelPlaceholder.getChildren().add(eventPanel.getRoot());
+    }
+
+    /**
+     * Shows the home page (person list) within the main window.
+     */
+    @FXML
+    public void handleHome() {
+        personListPanelPlaceholder.getChildren().clear();
+        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -180,6 +200,14 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
+            }
+
+            if (commandResult.isShowEvents()) {
+                handleEvents();
+            }
+
+            if (commandResult.isShowHome()) {
+                handleHome();
             }
 
             if (commandResult.isExit()) {

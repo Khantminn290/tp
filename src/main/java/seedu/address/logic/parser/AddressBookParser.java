@@ -16,7 +16,9 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.HomeCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListEventCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -38,7 +40,20 @@ public class AddressBookParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
+        String trimmedInput = userInput.trim();
+
+        // Check for multi-word commands first
+        if (trimmedInput.equals(ListEventCommand.COMMAND_WORD)
+                || trimmedInput.startsWith(ListEventCommand.COMMAND_WORD + " ")) {
+            return new ListEventCommand();
+        }
+
+        if (trimmedInput.equals(HomeCommand.COMMAND_WORD)
+                || trimmedInput.startsWith(HomeCommand.COMMAND_WORD + " ")) {
+            return new HomeCommand();
+        }
+
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(trimmedInput);
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
